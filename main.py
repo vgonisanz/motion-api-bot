@@ -1,13 +1,34 @@
 import sys
 import os
 import json
+import argparse
+import shutil
 
 import telegram
-
 
 # Configuration
 setting_file_name = 'config.json'
 settings = None                     # Load here configuration and use as global
+
+def parse_arguments():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", "--create", default=None, required=False, help="Create config from default", action="store_true")
+    parser.add_argument('-q', '--query', default=None, required=False, help="query string", action="store", dest="query")
+    args = parser.parse_args()
+    if args.create is True:
+        create_default_config()
+        sys.exit(0)
+    if args.query is not None:
+        print("Create query; %s" % args.query)
+    return
+
+def create_default_config():
+    if not os.path.isfile(setting_file_name):
+        print("Creating default configuration...")
+        shutil.copyfile("templates/config_default.json", setting_file_name)
+    else:
+        print("You cannot create config file if exist, remove it before.")
+    return
 
 def read_configuration_file():
     """
@@ -28,6 +49,7 @@ def main():
     """
     Main: Print bot info
     """
+    parse_arguments()
     read_configuration_file()
     bot = telegram.Bot(token=settings["token"])
     print(bot.get_me())
