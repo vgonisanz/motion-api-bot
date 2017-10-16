@@ -1,0 +1,13 @@
+videodevice /dev/video0
+framerate 100
+minimum_frame_time 0
+width 1280
+height 720
+quality 90
+webcontrol_localhost off
+stream_localhost on
+stream_port 8081
+stream_auth_method 1
+stream_authentication vgoni:streampassword
+stream_quality 70
+stream_maxrate 15
