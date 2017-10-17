@@ -5,10 +5,17 @@ import argparse
 import shutil
 
 import telegram
+from telegram.ext import CommandHandler
+from telegram.ext import Updater
 
 # Configuration
 setting_file_name = 'config.json'
 settings = None                     # Load here configuration and use as global
+
+# Variables
+bot = None
+dispatcher = None
+updater = None
 
 def parse_arguments():
     parser = argparse.ArgumentParser()
@@ -45,14 +52,38 @@ def read_configuration_file():
             settings = json.load(data_file)
     return
 
+def initialize_bot():
+    global dispatcher, bot, updater
+
+    #bot = telegram.Bot(token=settings["token"])
+    updater = Updater(token=settings["token"])
+    dispatcher = updater.dispatcher
+
+    start_handler = CommandHandler('start', start)
+    dispatcher.add_handler(start_handler)
+
+    print("Bot is running now...")
+    updater.start_polling()
+
+
+
+    return
+
+def start(bot, update):
+    bot.send_message(chat_id=update.message.chat_id, text="I'm a bot, please talk to me!")
+    return
+
+def print_bot_info():
+    print(bot.get_me())
+    return
+
 def main():
     """
     Main: Print bot info
     """
     parse_arguments()
     read_configuration_file()
-    bot = telegram.Bot(token=settings["token"])
-    print(bot.get_me())
+    initialize_bot()
     return
 
 if __name__ == '__main__':
