@@ -49,7 +49,7 @@ def read_configuration_file():
 def launch_bot():
     global bot
 
-    bot = Core(settings)
+    bot = Core(settings, True, True)
     bot.run()
     return
 
@@ -60,7 +60,6 @@ def main():
     parse_arguments()
     read_configuration_file()
     launch_bot()
-    #initialize_bot()
     return
 
 if __name__ == '__main__':

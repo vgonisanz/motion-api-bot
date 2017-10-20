@@ -102,7 +102,11 @@ class Core(object):
         self.logger.info("The bot is now waiting for orders!")
         self.updater.start_polling()
 
-    def start(bot, update):
+    """ ********************************************************************** """
+    """ ******                        API functions                *********** """
+    """ ********************************************************************** """
+    def start(self, bot, update):
+        self.logger.info("Received start command")
         bot.send_message(chat_id=update.message.chat_id, text="I'm a bot, please talk to me!")
         return
 
