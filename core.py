@@ -3,8 +3,10 @@ import os
 import logging
 
 import telegram
-from telegram.ext import CommandHandler
 from telegram.ext import Updater
+from telegram.ext import CommandHandler
+from telegram.ext import MessageHandler
+from telegram.ext import Filters
 
 class Core(object):
     """
@@ -24,8 +26,7 @@ class Core(object):
     settings = None
 
     api = [
-        'start',
-        'echo'
+        'start'
     ]
 
     """ ********************************************************************** """
@@ -101,12 +102,15 @@ class Core(object):
     def __create_api(self):
         """
         Create and add all handlers using api array. Require define a function with the same name has the command to be called when received.
+        Also add a special handler to manage unknown commands.
         """
         for command in self.api:
             print("Creating command: %s" % command)
             cmd_handler = CommandHandler(command, getattr(self, command))
             self._updater.dispatcher.add_handler(cmd_handler)
 
+        unknown_handler = MessageHandler(Filters.command, getattr(self, 'unknown'))
+        self._updater.dispatcher.add_handler(unknown_handler)
         return
 
     def run(self):
@@ -130,6 +134,6 @@ class Core(object):
         bot.send_message(chat_id=update.message.chat_id, text="I'm a bot, please talk to me!")
         return
 
-    def echo(self, bot, update):
-        self.logger.info("Received echo command")
-        bot.send_message(chat_id=update.message.chat_id, text=update.message.text)
+    def unknown(self, bot, update):
+        self.logger.info("Received unknown command")
+        bot.send_message(chat_id=update.message.chat_id, text="Sorry, unknown command")
