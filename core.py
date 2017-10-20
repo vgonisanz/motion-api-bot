@@ -9,8 +9,10 @@ from telegram.ext import Updater
 class Core(object):
     """
     This python 3 class will manager the core of the motion bot.
+        * Complete api array with commands wanted. Create a function into the class with same name.
+        * In example: 'my_command' in api array need def my_command(self, bot, update): with its behavior.
 
-    To generate HTML documentation for this module issue the command: pydoc -w Wpm
+    To generate HTML documentation for this module issue the command: pydoc -w Core
     """
 
     _log_folder = "log"
@@ -20,6 +22,15 @@ class Core(object):
     updater = None
 
     settings = None
+
+    api = [
+        'start',
+        'echo'
+    ]
+
+    """ ********************************************************************** """
+    """ ******                   Internal functions                *********** """
+    """ ********************************************************************** """
 
     """
     Initialize class: Initialize CursesManager
@@ -87,20 +98,32 @@ class Core(object):
             self.logger.addHandler(handler_std)
         return
 
+    def create_api(self):
+        """
+        Create and add all handlers using api array. Require define a function with the same name has the command to be called when received.
+        """
+        for command in self.api:
+            print("Creating command: %s" % command)
+            cmd_handler = CommandHandler(command, getattr(self, command))
+            self.dispatcher.add_handler(cmd_handler)
+
+        return
+
     def run(self):
         """
-        Run the bot
+        Run the bot:
+            * Initialize online the bot using user token
+            * Create all handlers linked to its functions using create_api
+            * Start polling to work
         """
-
-        #bot = telegram.Bot(token=settings["token"])
         self.updater = Updater(token=self.settings["token"])
         self.dispatcher = self.updater.dispatcher
 
-        start_handler = CommandHandler('start', self.start)
-        self.dispatcher.add_handler(start_handler)
+        self.create_api()
 
         self.logger.info("The bot is now waiting for orders!")
         self.updater.start_polling()
+        return
 
     """ ********************************************************************** """
     """ ******                        API functions                *********** """
@@ -110,6 +133,6 @@ class Core(object):
         bot.send_message(chat_id=update.message.chat_id, text="I'm a bot, please talk to me!")
         return
 
-    def print_bot_info():
-        #print(bot.get_me())
-        return
+    def echo(self, bot, update):
+        self.logger.info("Received echo command")
+        bot.send_message(chat_id=update.message.chat_id, text=update.message.text)
