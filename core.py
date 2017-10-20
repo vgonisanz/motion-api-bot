@@ -15,10 +15,10 @@ class Core(object):
     To generate HTML documentation for this module issue the command: pydoc -w Core
     """
 
+    logger = None
+
     _log_folder = "log"
 
-    logger = None
-    dispatcher = None
     updater = None
 
     settings = None
@@ -98,14 +98,14 @@ class Core(object):
             self.logger.addHandler(handler_std)
         return
 
-    def create_api(self):
+    def __create_api(self):
         """
         Create and add all handlers using api array. Require define a function with the same name has the command to be called when received.
         """
         for command in self.api:
             print("Creating command: %s" % command)
             cmd_handler = CommandHandler(command, getattr(self, command))
-            self.dispatcher.add_handler(cmd_handler)
+            self._updater.dispatcher.add_handler(cmd_handler)
 
         return
 
@@ -116,13 +116,10 @@ class Core(object):
             * Create all handlers linked to its functions using create_api
             * Start polling to work
         """
-        self.updater = Updater(token=self.settings["token"])
-        self.dispatcher = self.updater.dispatcher
-
-        self.create_api()
-
+        self._updater = Updater(token=self.settings["token"])
+        self.__create_api()
         self.logger.info("The bot is now waiting for orders!")
-        self.updater.start_polling()
+        self._updater.start_polling()
         return
 
     """ ********************************************************************** """
