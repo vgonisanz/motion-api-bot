@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys
 import os
 import logging
@@ -7,6 +8,9 @@ from telegram.ext import Updater
 from telegram.ext import CommandHandler
 from telegram.ext import MessageHandler
 from telegram.ext import Filters
+
+from telegram.error import (TelegramError, Unauthorized, BadRequest,
+                            TimedOut, ChatMigrated, NetworkError)
 
 class Core(object):
     """
@@ -104,14 +108,41 @@ class Core(object):
         Create and add all handlers using api array. Require define a function with the same name has the command to be called when received.
         Also add a special handler to manage unknown commands.
         """
+        # Add handler for api commands
         for command in self.api:
             print("Creating command: %s" % command)
             cmd_handler = CommandHandler(command, getattr(self, command))
             self._updater.dispatcher.add_handler(cmd_handler)
 
+        # Add a handler for unknown commands
         unknown_handler = MessageHandler(Filters.command, getattr(self, 'unknown'))
         self._updater.dispatcher.add_handler(unknown_handler)
+
+        # Add a handler to manage exceptions
+        self._updater.dispatcher.add_error_handler(self.__error_callback)
         return
+
+    def __error_callback(self, bot, update, error):
+        try:
+            raise error
+        except Unauthorized:
+            # remove update.message.chat_id from conversation list
+            self.logger.info("Error Unauthorized found!")
+        except BadRequest:
+            # handle malformed requests - read more below!
+            self.logger.info("Error BadRequest found!")
+        except TimedOut:
+            # handle slow connection problems
+            self.logger.info("Error TimedOut found!")
+        except NetworkError:
+            # handle other connection problems
+            self.logger.info("Error NetworkError found!")
+        except ChatMigrated as e:
+            # the chat_id of a group has changed, use e.new_chat_id instead
+            self.logger.info("Error ChatMigrated found!")
+        except TelegramError:
+            # handle all other telegram related errors
+            self.logger.info("Error TelegramError found!")
 
     def run(self):
         """

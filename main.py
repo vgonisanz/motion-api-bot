@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
 import sys
 import os
 import json
 import argparse
 import shutil
+import signal
 
 from core import Core
 
