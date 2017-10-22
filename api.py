@@ -203,7 +203,7 @@ class Api(object):
 
     def test(self, bot, update):
         self.logger.info("Received test command")
-        response_text = self._core.test(self.settings["server_address"] + "help")
+        response_text = self._core.test(self.settings["server_address"] + "v1/info")
         bot.send_message(chat_id=update.message.chat_id, text=response_text)
         return
 

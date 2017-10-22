@@ -26,8 +26,10 @@ class CmdV1(linkero.Resource):
 
     def get(self, cmd):
         value = ''
-        if is_cmd_in_list(self.v1_cmd_list, cmd):
+        if self.is_cmd_in_list(self.v1_cmd_list, cmd):
             value = self.v1_cmd_list[cmd]()         # Invoke callback for each command
+        else:
+            value = 'No valid command for v1'
         return value, 201
 
     def delete(self, cmd):
@@ -44,13 +46,24 @@ class CmdV1(linkero.Resource):
     """ ********************************************************************** """
     """ ******                  Internal functions                 *********** """
     """ ********************************************************************** """
-    def f_help(self):
-        print("f_help")
-        return
 
-    def f_info(self):
+    def is_cmd_in_list(self, cmd_list, cmd):
+        """
+        is_cmd_in_list: Return a 404 error message if a command doesn't exist.
+        """
+        if cmd not in cmd_list:
+            linkero.abort(404, message="Command {} doesn't exist".format(cmd))
+            return False
+        else:
+            return True
+
+    def f_help():
+        print("f_help")
+        return 'f_help'
+
+    def f_info():
         print("f_info")
-        return
+        return 'f_info'
 
     v1_cmd_list = {
         'help': f_help,
@@ -78,7 +91,7 @@ class Server(object):
                 - help: This resource return all versions valid.
         """
         linkero.api.add_resource(CmdList, '/help')  # Call CmdList resource if HTTP request to help
-        #linkero.api.add_resource(CmdV1, '/v1/<cmd>')
+        linkero.api.add_resource(CmdV1, '/v1/<cmd>')
         return
 
     def __enter__(self):
