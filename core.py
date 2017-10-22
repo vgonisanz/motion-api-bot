@@ -1,3 +1,5 @@
+import os.path
+
 class Core(object):
     """
     This python 3 class will manager the logic of motion behavior.
@@ -54,5 +56,13 @@ class Core(object):
         return stopped
 
     def info(self):
-        response_info = 'Camera configuration path: %s' % self.camera_configuration_path
+        response_info = 'Camera configuration path: %s\n' % self.camera_configuration_path
+
+        if os.path.isfile(self.camera_configuration_path):
+            file = open(self.camera_configuration_path, "r")
+            response_info += '+----------------------------------------+' + '\n'
+            response_info += file.read()
+            response_info += '+----------------------------------------+'
+        else:
+            response_info += "File not exist! configurate with a existing file dude!"
         return response_info
