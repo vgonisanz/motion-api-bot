@@ -12,26 +12,28 @@ from telegram.ext import Filters
 from telegram.error import (TelegramError, Unauthorized, BadRequest,
                             TimedOut, ChatMigrated, NetworkError)
 
+from core import Core
+
 class Api(object):
     """
-    This python 3 class will manager the core of the motion bot.
+    This python 3 class will manager the api of the motion bot calling the core to work.
         * Complete api array with commands wanted. Create a function into the class with same name.
         * In example: 'my_command' in api array need def my_command(self, bot, update): with its behavior.
 
-    To generate HTML documentation for this module issue the command: pydoc -w Core
+    To generate HTML documentation for this module issue the command: pydoc -w Api
     """
 
     logger = None
-
     _log_folder = "log"
-
     updater = None
-
     settings = None
 
     api_commands = [
-        'start'
+        'start',
+        'stop'
     ]
+
+    _core = None
 
     """ ********************************************************************** """
     """ ******                   Internal functions                *********** """
@@ -52,6 +54,7 @@ class Api(object):
         self.settings = settings
 
         self.__create_log(use_stdout, use_file_log)
+        self._core = Core()
         self.logger.info("Motion api bot instance initialized!")
         return
 
@@ -162,7 +165,26 @@ class Api(object):
     """ ********************************************************************** """
     def start(self, bot, update):
         self.logger.info("Received start command")
-        bot.send_message(chat_id=update.message.chat_id, text="I'm a bot, please talk to me!")
+        response_text = ''
+        self.logger.info("start")
+        success = self._core.start()
+        self.logger.info("started")
+        if success:
+            response_text = 'Motion start to detect events'
+        else:
+            response_text = 'Error: Motion is already working!'
+        bot.send_message(chat_id=update.message.chat_id, text=response_text)
+        return
+
+    def stop(self, bot, update):
+        self.logger.info("Received stop command")
+        response_text = ''
+        success = self._core.stop()
+        if success:
+            response_text = 'Motion stop to detect events'
+        else:
+            response_text = 'Error: Motion is not working!'
+        bot.send_message(chat_id=update.message.chat_id, text=response_text)
         return
 
     def unknown(self, bot, update):
