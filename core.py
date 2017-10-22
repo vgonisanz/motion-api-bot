@@ -51,7 +51,7 @@ class Core(object):
         """
         self.settings = settings
 
-        self.__createLog(use_stdout, use_file_log)
+        self.__create_log(use_stdout, use_file_log)
         self.logger.info("Motion api bot instance initialized!")
         return
 
@@ -68,7 +68,7 @@ class Core(object):
         self.logger.info("Motion api bot instance exit!")
         return
 
-    def __createLog(self, use_stdout, use_file_log):
+    def __create_log(self, use_stdout, use_file_log):
         """
         Create a logger class to output messages through console at DEBUG level.
         """
