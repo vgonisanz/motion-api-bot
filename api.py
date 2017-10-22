@@ -12,7 +12,7 @@ from telegram.ext import Filters
 from telegram.error import (TelegramError, Unauthorized, BadRequest,
                             TimedOut, ChatMigrated, NetworkError)
 
-class Core(object):
+class Api(object):
     """
     This python 3 class will manager the core of the motion bot.
         * Complete api array with commands wanted. Create a function into the class with same name.
@@ -29,7 +29,7 @@ class Core(object):
 
     settings = None
 
-    api = [
+    api_commands = [
         'start'
     ]
 
@@ -45,7 +45,7 @@ class Core(object):
         Initialize the following elements:
             * setting: Required json with bot configuration.
             * Log: Create a log using stdout or file if required.
-            * Bot api: Create bot actions
+            * Bot api commands: Create bot actions
 
         Usage: To launch updater and dispatcher, please use run function.
         """
@@ -103,13 +103,13 @@ class Core(object):
             self.logger.addHandler(handler_std)
         return
 
-    def __create_api(self):
+    def __create_api_commands(self):
         """
         Create and add all handlers using api array. Require define a function with the same name has the command to be called when received.
         Also add a special handler to manage unknown commands.
         """
         # Add handler for api commands
-        for command in self.api:
+        for command in self.api_commands:
             print("Creating command: %s" % command)
             cmd_handler = CommandHandler(command, getattr(self, command))
             self._updater.dispatcher.add_handler(cmd_handler)
@@ -152,7 +152,7 @@ class Core(object):
             * Start polling to work
         """
         self._updater = Updater(token=self.settings["token"])
-        self.__create_api()
+        self.__create_api_commands()
         self.logger.info("The bot is now waiting for orders!")
         self._updater.start_polling()
         return

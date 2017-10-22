@@ -5,7 +5,7 @@ import json
 import argparse
 import shutil
 
-from core import Core
+from api import Api
 
 # Configuration
 template_file_path = "templates/config_default.json"
@@ -51,7 +51,7 @@ def read_configuration_file():
 def launch_bot():
     global bot
 
-    bot = Core(settings, True, True)
+    bot = Api(settings, True, True)
     bot.run()
     return
 
