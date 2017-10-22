@@ -8,8 +8,9 @@ import shutil
 from api import Api
 
 # Configuration
-template_file_path = "templates/config_default.json"
-setting_file_name = 'config.json'
+template_file_path = "templates/config_bot_default.json"
+config_folder = 'config'
+setting_file_name = config_folder + '/config_bot.json'
 settings = None                     # Load here configuration and use as global
 
 def parse_arguments():
@@ -25,6 +26,9 @@ def parse_arguments():
     return
 
 def create_default_config():
+    if not os.path.isdir(config_folder):
+        print("Creating config folder...")
+        os.makedirs(config_folder)
     if not os.path.isfile(setting_file_name):
         print("Creating default configuration...")
         shutil.copyfile(template_file_path, setting_file_name)

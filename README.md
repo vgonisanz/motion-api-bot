@@ -2,7 +2,15 @@
 
 This bot use a submodule with [motion repository]()
 
+# Installation
 
+*TODO*
+
+# Files
+
+* **api**: Manage telegram python api and make calls to core.
+* **core**: Client api of linkero to make calls to running server and logic to manage bot behavior.
+* **server**: Api server of linkero to manage motion server.
 
 # Bibliography
 
