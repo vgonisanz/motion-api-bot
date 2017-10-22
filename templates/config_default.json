@@ -1,3 +1,4 @@
 {
-    "token":"YOUR_TOKEN_FROM_BOTFATHER"
+    "token":"YOUR_TOKEN_FROM_BOTFATHER",
+    "camera_configuration_path":"./templates/cam_configuration.txt"
 }
