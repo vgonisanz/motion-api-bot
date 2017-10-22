@@ -31,7 +31,8 @@ class Api(object):
     api_commands = [
         'start',
         'stop',
-        'info'
+        'info',
+        'version'
     ]
 
     _core = None
@@ -188,8 +189,14 @@ class Api(object):
         return
 
     def info(self, bot, update):
-        self.logger.info("Received stop command")
+        self.logger.info("Received info command")
         response_text = self._core.info()
+        bot.send_message(chat_id=update.message.chat_id, text=response_text)
+        return
+
+    def version(self, bot, update):
+        self.logger.info("Received version command")
+        response_text = self._core.version()
         bot.send_message(chat_id=update.message.chat_id, text=response_text)
         return
 

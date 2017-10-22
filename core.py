@@ -7,6 +7,10 @@ class Core(object):
     To generate HTML documentation for this module issue the command: pydoc -w Core
     """
 
+    version_major = '0'
+    version_minor = '1'
+    version_subminor = '0'
+
     is_working = False
     camera_configuration_path = 'camera_config.txt'
 
@@ -66,3 +70,6 @@ class Core(object):
         else:
             response_info += "File not exist! configurate with a existing file dude!"
         return response_info
+
+    def version(self):
+        return 'v' + self.version_major + '.' + self.version_minor + '.' + self.version_subminor
