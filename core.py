@@ -1,4 +1,5 @@
 import os.path
+import requests
 
 class Core(object):
     """
@@ -73,3 +74,8 @@ class Core(object):
 
     def version(self):
         return 'v' + self.version_major + '.' + self.version_minor + '.' + self.version_subminor
+
+    def test(self, data):
+        print("test data: %s" % data)
+        r = requests.get(data)
+        return r.content

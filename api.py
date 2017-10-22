@@ -32,7 +32,8 @@ class Api(object):
         'start',
         'stop',
         'info',
-        'version'
+        'version',
+        'test'
     ]
 
     _core = None
@@ -197,6 +198,12 @@ class Api(object):
     def version(self, bot, update):
         self.logger.info("Received version command")
         response_text = self._core.version()
+        bot.send_message(chat_id=update.message.chat_id, text=response_text)
+        return
+
+    def test(self, bot, update):
+        self.logger.info("Received test command")
+        response_text = self._core.test(self.settings["server_address"] + "help")
         bot.send_message(chat_id=update.message.chat_id, text=response_text)
         return
 
