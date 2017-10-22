@@ -6,6 +6,7 @@ class Core(object):
     """
 
     is_working = False
+    camera_configuration_path = 'camera_config.txt'
 
     """ ********************************************************************** """
     """ ******                   Internal functions                *********** """
@@ -14,11 +15,12 @@ class Core(object):
     """
     Initialize class: Initialize CursesManager
     """
-    def __init__(self):
+    def __init__(self, camera_configuration_path):
         """
         Initialize
         """
         self.is_working = False
+        self.camera_configuration_path = camera_configuration_path
         return
 
     def __enter__(self):
@@ -50,3 +52,7 @@ class Core(object):
             self.is_working = False
             stopped = True
         return stopped
+
+    def info(self):
+        response_info = 'Camera configuration path: %s' % self.camera_configuration_path
+        return response_info

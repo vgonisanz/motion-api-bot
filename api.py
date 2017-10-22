@@ -30,7 +30,8 @@ class Api(object):
 
     api_commands = [
         'start',
-        'stop'
+        'stop',
+        'info'
     ]
 
     _core = None
@@ -54,7 +55,8 @@ class Api(object):
         self.settings = settings
 
         self.__create_log(use_stdout, use_file_log)
-        self._core = Core()
+        self._core = Core(self.settings["camera_configuration_path"])
+        self.logger.info("Motion core will use %s configuration" % self.settings["camera_configuration_path"])
         self.logger.info("Motion api bot instance initialized!")
         return
 
@@ -166,9 +168,7 @@ class Api(object):
     def start(self, bot, update):
         self.logger.info("Received start command")
         response_text = ''
-        self.logger.info("start")
         success = self._core.start()
-        self.logger.info("started")
         if success:
             response_text = 'Motion start to detect events'
         else:
@@ -184,6 +184,12 @@ class Api(object):
             response_text = 'Motion stop to detect events'
         else:
             response_text = 'Error: Motion is not working!'
+        bot.send_message(chat_id=update.message.chat_id, text=response_text)
+        return
+
+    def info(self, bot, update):
+        self.logger.info("Received stop command")
+        response_text = self._core.info()
         bot.send_message(chat_id=update.message.chat_id, text=response_text)
         return
 
