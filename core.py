@@ -13,7 +13,7 @@ class Core(object):
     version_subminor = '0'
 
     is_working = False
-    camera_configuration_path = 'config/camera_config.conf'
+    camera_configuration_path = 'config/camera0.conf'
 
     """ ********************************************************************** """
     """ ******                   Internal functions                *********** """
