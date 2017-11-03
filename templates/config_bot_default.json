@@ -1,5 +1,5 @@
 {
     "token":"YOUR_TOKEN_FROM_BOTFATHER",
-    "camera_configuration_path":"./templates/cam_configuration.txt",
+    "camera_configuration_path":"./config/camera0.conf",
     "server_address":"localhost:5000"
 }
