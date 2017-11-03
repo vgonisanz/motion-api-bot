@@ -17,8 +17,14 @@ class CmdList(linkero.Resource):
 
 class CmdV1(linkero.Resource):
     """
-    V1 class with
+    V1 with commands available and behavior for requests.
+
+    To provide all bot functionality shall contain same
+    commands than api_commands in Api class. This array
+    have pair <cmd>:<function_call> so it is at the bottom
+    of this class.
     """
+    version = 'Server API V1.0'
 
     """ ********************************************************************** """
     """ ******                   HTTP    functions                 *********** """
@@ -57,6 +63,9 @@ class CmdV1(linkero.Resource):
         else:
             return True
 
+    ###############################################################
+    # Internal <function_call> from v1_cmd_list, modify to add behavior.
+    ###############################################################
     def f_help():
         print("f_help")
         return 'f_help'
@@ -65,11 +74,38 @@ class CmdV1(linkero.Resource):
         print("f_info")
         return 'f_info'
 
+    def f_start():
+        print("f_start")
+        return 'f_start'
+
+    def f_stop():
+        print("f_stop")
+        return 'f_stop'
+
+    def f_version():
+        print("f_version")
+        return 'f_f_versionf_infoinfo'
+
+    def f_info():
+        print("f_info")
+        return 'f_info'
+
+    def f_test():
+        print("f_test")
+        return 'f_test'
+
+    ###############################################################
+    # Array with <cmd>:<function_call> modify to add cmds.
+    ###############################################################
     v1_cmd_list = {
         'help': f_help,
-        'info': f_info
+        'info': f_info,
+        'start': f_start,
+        'stop': f_stop,
+        'info': f_info,
+        'version': f_version,
+        'test': f_test
     }
-
 
 class Server(object):
     """
