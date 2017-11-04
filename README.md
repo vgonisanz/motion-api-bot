@@ -8,26 +8,41 @@ This bot use a submodule with [motion repository]()
 
 # Files
 
-* **api**: Manage telegram python api and make calls to core.
-* **core**: Client api of linkero to make calls to running server and logic to manage bot behavior.
-* **server**: Api server of linkero to manage motion server.
+This bot use a token to be used by telegram api. Make http requests to server if is running.
+
+## Client related
+
+This code shall be used to create a bot using a valid id from fatherbot. vgonisanz use it to create its own motion-api-bot to be used by anyone.
+You can get another id and create a similar bot with your own changes.
+
+* **bot**: Main script to manage bot. Contain usage and use api file to make all calls to the server.
+* **api**: Client to manage telegram python api and make calls to core. Is used by bot script. Use HTTP request to get info from a running server.
+
+## Server related
+
+This code is used to have a server with motion installed to start and stop getting data and other operations.
+
+* **server**: Main script to manage server based on linkero.
+* **core**: Client api of linkero to feed bot http requests.
 
 # Design v1
 
 All services can be requested using ```/api/v1```.
-* info: GET request to get info from the system.
-  * time: Get the current time.
-  * hw: Get hardware info.
 
-# Bot and client
+# Bot usage
 
-This bot use a token to be used by telegram api. Make http requests to server if is running.
+Bot is an instance running in bot computer. It can be host by anyone. You will need to register your server in order to use it thought telegram.
 
-# Server
+```
+python bot.py
+```
 
-Server is an instance running in host computer to manage motion library and usint its webcam as defined into configuration file.
+# Server usage
+
+Server is an instance running in host computer to manage motion library and using its webcam as defined into configuration file.
 
 Launch server with command:
+
 ```
 python server.py
 ```

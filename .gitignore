@@ -1,5 +1,6 @@
 ### MOTION-API
-config/
+bot/config/
+server/config/
 test/
 
 ### Vim
