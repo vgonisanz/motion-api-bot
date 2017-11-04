@@ -1,10 +1,35 @@
 # Bot for telegram using motion library
 
-This bot use a submodule with [motion repository]()
+This bot use a submodule with [motion repository](https://github.com/Motion-Project/motion)
+
+This code has been tested with motion in:
+
+* Fedora distro
+* Raspberry pi **TODO**
 
 # Installation
 
-*TODO*
+*TODO* requirements.txt
+
+## 3rdParty
+
+This bot and server use motion source code. You can find it in the original github project page or use it as submodule.
+
+1. Get the code (Currently use v4.0)
+
+```
+git submodule init
+git submodule update
+```
+
+1. Compile the code
+
+```
+autoreconf -fiv
+./configure
+make
+make install
+```
 
 # Files
 
