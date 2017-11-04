@@ -165,7 +165,7 @@ class Api(object):
     """ ********************************************************************** """
     def help(self, bot, update):
         self.logger.info("Received help command")
-        response_text = requests.get("http://localhost:5000/v1/help")
+        response_text = requests.get("http://localhost:5000/v1/help").content
         bot.send_message(chat_id=update.message.chat_id, text=response_text)
         return
 
