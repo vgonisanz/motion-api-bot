@@ -59,6 +59,7 @@ All services can be requested using ```/api/v1```.
 Bot is an instance running in bot computer. It can be host by anyone. You will need to register your server in order to use it thought telegram.
 
 ```
+cd bot
 python bot.py
 ```
 
@@ -69,6 +70,7 @@ Server is an instance running in host computer to manage motion library and usin
 Launch server with command:
 
 ```
+cd server
 python server.py
 ```
 

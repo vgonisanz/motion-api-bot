@@ -12,11 +12,9 @@ from telegram.ext import Filters
 from telegram.error import (TelegramError, Unauthorized, BadRequest,
                             TimedOut, ChatMigrated, NetworkError)
 
-from core import Core
-
 class Api(object):
     """
-    This python 3 class will manager the api of the motion bot calling the core to work.
+    This python 3 class will manager the api of the motion bot making http requests to the core to work.
         * Complete api array with commands wanted. Create a function into the class with same name.
         * In example: 'my_command' in api array need def my_command(self, bot, update): with its behavior.
 
@@ -35,8 +33,6 @@ class Api(object):
         'version',
         'test'
     ]
-
-    _core = None
 
     """ ********************************************************************** """
     """ ******                   Internal functions                *********** """
@@ -57,9 +53,6 @@ class Api(object):
         self.settings = settings
 
         self.__create_log(use_stdout, use_file_log)
-        self._core = Core(self.settings["camera_configuration_path"])
-        self.logger.info("Motion core will use %s configuration" % self.settings["camera_configuration_path"])
-        self.logger.info("Motion api bot instance initialized!")
         return
 
     def __enter__(self):
@@ -170,7 +163,7 @@ class Api(object):
     def start(self, bot, update):
         self.logger.info("Received start command")
         response_text = ''
-        success = self._core.start()
+        #success = self._core.start()
         if success:
             response_text = 'Motion start to detect events'
         else:
@@ -181,7 +174,7 @@ class Api(object):
     def stop(self, bot, update):
         self.logger.info("Received stop command")
         response_text = ''
-        success = self._core.stop()
+        #success = self._core.stop()
         if success:
             response_text = 'Motion stop to detect events'
         else:
@@ -191,19 +184,19 @@ class Api(object):
 
     def info(self, bot, update):
         self.logger.info("Received info command")
-        response_text = self._core.info()
+        #response_text = self._core.info()
         bot.send_message(chat_id=update.message.chat_id, text=response_text)
         return
 
     def version(self, bot, update):
         self.logger.info("Received version command")
-        response_text = self._core.version()
+        #response_text = self._core.version()
         bot.send_message(chat_id=update.message.chat_id, text=response_text)
         return
 
     def test(self, bot, update):
         self.logger.info("Received test command")
-        response_text = self._core.test(self.settings["server_address"] + "v1/info")
+        #response_text = self._core.test(self.settings["server_address"] + "v1/info")
         bot.send_message(chat_id=update.message.chat_id, text=response_text)
         return
 
