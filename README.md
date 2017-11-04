@@ -40,7 +40,7 @@ This bot use a token to be used by telegram api. Make http requests to server if
 This code shall be used to create a bot using a valid id from fatherbot. vgonisanz use it to create its own motion-api-bot to be used by anyone.
 You can get another id and create a similar bot with your own changes.
 
-* **bot**: Main script to manage bot. Contain usage and use api file to make all calls to the server.
+* **client**: Main script to manage bot. Contain usage and use api file to make all calls to the server.
 * **api**: Client to manage telegram python api and make calls to core. Is used by bot script. Use HTTP request to get info from a running server.
 
 ## Server related
@@ -60,7 +60,7 @@ Bot is an instance running in bot computer. It can be host by anyone. You will n
 
 ```
 cd bot
-python bot.py
+python client.py
 ```
 
 # Server usage

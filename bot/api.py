@@ -3,6 +3,8 @@ import sys
 import os
 import logging
 
+import requests
+
 import telegram
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
@@ -27,6 +29,7 @@ class Api(object):
     settings = None
 
     api_commands = [
+        'help',
         'start',
         'stop',
         'info',
@@ -160,6 +163,12 @@ class Api(object):
     """ ********************************************************************** """
     """ ******                        API functions                *********** """
     """ ********************************************************************** """
+    def help(self, bot, update):
+        self.logger.info("Received help command")
+        response_text = requests.get("http://localhost:5000/v1/help")
+        bot.send_message(chat_id=update.message.chat_id, text=response_text)
+        return
+
     def start(self, bot, update):
         self.logger.info("Received start command")
         response_text = ''
