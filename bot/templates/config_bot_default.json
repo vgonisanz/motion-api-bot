@@ -1,4 +1,5 @@
 {
     "token":"YOUR_TOKEN_FROM_BOTFATHER",
-    "server_address":"localhost:5000"
+    "server_address":"localhost:5000",
+    "version":"Motion bot v0.3"
 }

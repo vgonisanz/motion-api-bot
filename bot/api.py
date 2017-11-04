@@ -166,58 +166,54 @@ class Api(object):
         :return: response, or text error
         """
         address = 'http://' + self.settings['server_address'] + '/v1/' + cmd
-        print(address)
         return requests.get(address)
 
     """ ********************************************************************** """
     """ ******                        API functions                *********** """
     """ ********************************************************************** """
     def help(self, bot, update):
+        """ get request to server """
         self.logger.info("Received help command")
         response = self.get_request_to_server('help')
         bot.send_message(chat_id=update.message.chat_id, text=response.content)
         return
 
     def start(self, bot, update):
+        """ get request to server """
         self.logger.info("Received start command")
-        response_text = ''
-        #success = self._core.start()
-        if success:
-            response_text = 'Motion start to detect events'
-        else:
-            response_text = 'Error: Motion is already working!'
-        bot.send_message(chat_id=update.message.chat_id, text=response_text)
+        response = self.get_request_to_server('start')
+        bot.send_message(chat_id=update.message.chat_id, text=response.content)
         return
 
     def stop(self, bot, update):
+        """ get request to server """
         self.logger.info("Received stop command")
-        response_text = ''
-        #success = self._core.stop()
-        if success:
-            response_text = 'Motion stop to detect events'
-        else:
-            response_text = 'Error: Motion is not working!'
-        bot.send_message(chat_id=update.message.chat_id, text=response_text)
+        response = self.get_request_to_server('stop')
+        bot.send_message(chat_id=update.message.chat_id, text=response.content)
         return
 
     def info(self, bot, update):
+        """ get request to server """
         self.logger.info("Received info command")
-        #response_text = self._core.info()
-        bot.send_message(chat_id=update.message.chat_id, text=response_text)
+        response = self.get_request_to_server('info')
+        bot.send_message(chat_id=update.message.chat_id, text=response.content)
         return
 
     def version(self, bot, update):
+        """ return bot version """
         self.logger.info("Received version command")
-        #response_text = self._core.version()
-        bot.send_message(chat_id=update.message.chat_id, text=response_text)
+        bot.send_message(chat_id=update.message.chat_id, text=self.settings['version'])
         return
 
     def test(self, bot, update):
+        """ test function """
         self.logger.info("Received test command")
-        #response_text = self._core.test(self.settings["server_address"] + "v1/info")
-        bot.send_message(chat_id=update.message.chat_id, text=response_text)
+        response = self.get_request_to_server('test')
+        bot.send_message(chat_id=update.message.chat_id, text=response.content)
         return
 
     def unknown(self, bot, update):
+        """ return unknown command message """
         self.logger.info("Received unknown command")
         bot.send_message(chat_id=update.message.chat_id, text="Sorry, unknown command")
+        return
