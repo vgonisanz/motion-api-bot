@@ -160,13 +160,22 @@ class Api(object):
         self._updater.start_polling()
         return
 
+    def get_request_to_server(self, cmd):
+        """
+        Make a request using ip and port configured in settings
+        :return: response, or text error
+        """
+        address = 'http://' + self.settings['server_address'] + '/v1/' + cmd
+        print(address)
+        return requests.get(address)
+
     """ ********************************************************************** """
     """ ******                        API functions                *********** """
     """ ********************************************************************** """
     def help(self, bot, update):
         self.logger.info("Received help command")
-        response_text = requests.get("http://localhost:5000/v1/help").content
-        bot.send_message(chat_id=update.message.chat_id, text=response_text)
+        response = self.get_request_to_server('help')
+        bot.send_message(chat_id=update.message.chat_id, text=response.content)
         return
 
     def start(self, bot, update):
