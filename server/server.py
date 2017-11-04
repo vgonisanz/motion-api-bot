@@ -1,6 +1,15 @@
+# -*- coding: utf-8 -*-
+import sys
+import os
+import json
+import argparse
+import shutil
+
 import linkero.core.linkero as linkero
 import linkero.core.gateway.gevent_service as gevent
 import linkero.core.gateway.waitress_service as waitress
+
+from core import Core
 
 class CmdList(linkero.Resource):
     """
@@ -113,6 +122,14 @@ class Server(object):
     To generate HTML documentation for this module issue the command: pydoc -w Core
     """
 
+    # Configuration
+    template_file_path = "templates/config_server_default.json"
+    config_folder = 'config'
+    setting_file_name = 'config/config_server.json'
+
+    settings = None  # Load here configuration and use as global
+    _core = None
+
     """ ********************************************************************** """
     """ ******                   Internal functions                *********** """
     """ ********************************************************************** """
@@ -122,9 +139,13 @@ class Server(object):
     """
     def __init__(self):
         """
-        load: Api load add all server resources to get them ready to be used with HTTP requests.
-                - help: This resource return all versions valid.
+        load: Parse arguments and launch linkero server
         """
+
+        self.parse_arguments()
+        self.read_configuration_file()
+        self._core = Core(self.settings["camera_configuration_path"])
+
         linkero.api.add_resource(CmdList, '/help')  # Call CmdList resource if HTTP request to help
         linkero.api.add_resource(CmdV1, '/v1/<cmd>')
         return
@@ -139,7 +160,47 @@ class Server(object):
     def __exit__(self, exc_type, exc_value, traceback):
         return
 
+    def parse_arguments(self):
+        parser = argparse.ArgumentParser()
+        parser.add_argument("-c", "--create", default=None, required=False, help="Create config from default",
+                            action="store_true")
+        # parser.add_argument('-q', '--query', default=None, required=False, help="query string", action="store", dest="query")
+        args = parser.parse_args()
+        if args.create is True:
+            self.create_default_config()
+            sys.exit(0)
+        # if args.query is not None:
+        #    print("Create query; %s" % args.query)
+        return
+
+    def create_default_config(self):
+        if not os.path.isdir(self.config_folder):
+            print("Creating config folder...")
+            os.makedirs(self.config_folder)
+        if not os.path.isfile(self.setting_file_name):
+            print("Creating default configuration...")
+            shutil.copyfile(self.template_file_path, self.setting_file_name)
+        else:
+            print("You cannot create config file if exist, remove it before.")
+        return
+
+    def read_configuration_file(self):
+        """
+        Read configuration file
+        """
+        exist = os.path.isfile(self.setting_file_name)
+        if not exist:
+            print("Error reading config file: %s" % self.setting_file_name)
+            sys.exit(1)
+        else:
+            with open(self.setting_file_name) as data_file:
+                self.settings = json.load(data_file)
+        return
+
     def run(self):
+        #self.logger.info("Motion core will use %s configuration" % self.settings["camera_configuration_path"])
+        #self.logger.info("Motion api bot instance initialized!")
+
         linkero.run()  # Run with Werkzeug (not recommended for production environments)
         # gevent.run(linkero.app)    # Run with Gevent
         # waitress.run(linkero.app)   # Run with Waitress
