@@ -96,7 +96,6 @@ class CmdV1(linkero.Resource):
         return core.stop()
 
     def f_version(self):
-        print("f_version")
         return self.version
 
     def f_test(self):
