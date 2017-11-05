@@ -2,6 +2,8 @@
 
 import linkero.core.linkero as linkero
 
+#api_base_path = "/motion/api/v1"
+
 
 class CmdList(linkero.Resource):
     """
