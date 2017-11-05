@@ -11,6 +11,8 @@ import linkero.core.gateway.waitress_service as waitress
 
 from core import Core
 
+core = None     # Global instance of the core to be  initialized by server and managed by cmdvx.
+
 class CmdList(linkero.Resource):
     """
     CmdList linkero resource:
@@ -88,12 +90,10 @@ class CmdV1(linkero.Resource):
         return self.info
 
     def f_start(self):
-        print("f_start")
-        return 'f_start'
+        return core.start()
 
     def f_stop(self):
-        print("f_stop")
-        return 'f_stop'
+        return core.stop()
 
     def f_version(self):
         print("f_version")
@@ -128,7 +128,6 @@ class Server(object):
     setting_file_name = 'config/config_server.json'
 
     settings = None  # Load here configuration and use as global
-    _core = None
 
     """ ********************************************************************** """
     """ ******                   Internal functions                *********** """
@@ -144,7 +143,9 @@ class Server(object):
 
         self.parse_arguments()
         self.read_configuration_file()
-        self._core = Core(self.settings["camera_configuration_path"])
+
+        global core
+        core = Core(self.settings["camera_configuration_path"])
 
         linkero.api.add_resource(CmdList, '/help')  # Call CmdList resource if HTTP request to help
         linkero.api.add_resource(CmdV1, '/v1/<cmd>')

@@ -1,5 +1,6 @@
 import os.path
 import requests
+import subprocess
 
 class Core(object):
     """
@@ -13,7 +14,11 @@ class Core(object):
     version_subminor = '0'
 
     is_working = False
+
+    # Process variables
     camera_configuration_path = 'config/camera0.conf'
+    p_open = None
+    motion_args = None
 
     """ ********************************************************************** """
     """ ******                   Internal functions                *********** """
@@ -28,6 +33,7 @@ class Core(object):
         """
         self.is_working = False
         self.camera_configuration_path = camera_configuration_path
+        self.motion_args = ("motion", "-c", camera_configuration_path)      # Set default call to motion
         return
 
     def __enter__(self):
@@ -42,22 +48,30 @@ class Core(object):
 
     def start(self):
         started = False
+        message = ''
         if not self.is_working:
             # Call motion to start
+            self.p_open = subprocess.Popen(self.motion_args, stdout=subprocess.PIPE)
+            message = ("motion started with %d process id" % self.p_open.pid)
 
             # Update variables
             self.is_working = True
             started = True
-        return started
+        else:
+            message = ("motion is already working with %d process id" % self.p_open.pid)
+        return started, message
 
     def stop(self):
         stopped = False
         if self.is_working:
             # Call motion to stop
+            self.p_open.terminate()
 
             # Update variables
             self.is_working = False
             stopped = True
+        else:
+            print("motion is not working!")
         return stopped
 
     def info(self):
