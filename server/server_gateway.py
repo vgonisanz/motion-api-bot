@@ -6,10 +6,10 @@ import linkero.core.gateway.gevent_service as gevent
 import linkero.core.gateway.waitress_service as waitress
 
 # 2) APIs developed to use with Linkero
-import testBasicAPI
+import api_v1
 
 # 3) Load desired APIs
-testBasicAPI.loadTestBasicAPI()
+api_v1.loadAPIv1()
 
 # 4) Run Linkero
 linkero.run()              # Run with Werkzeug (not recommended for production environments)
