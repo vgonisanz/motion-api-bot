@@ -1,0 +1,4 @@
+[submodule "3rdparty/motion"]
+	path = 3rdparty/motion
+	url = https://github.com/Motion-Project/motion
+	branch = master

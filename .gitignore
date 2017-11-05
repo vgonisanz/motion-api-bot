@@ -1,5 +1,7 @@
 ### MOTION-API
-config.json
+bot/config/
+server/config/
+test/
 
 ### Vim
 
@@ -14,6 +16,9 @@ Session.vim
 # Temporary
 .netrwhist
 *~
+
+### IDE
+.idea/
 
 ### Python
 
@@ -43,6 +48,48 @@ wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.pyc
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.rar
+#*.tar
+*.zip
+
+# Logs and databases #
+######################
+*.log
+*.sqlite
+
+# OS generated files #
+######################
+.DS_Store
+ehthumbs.db
+Icon
+Thumbs.db
+.tmtags
+.idea
+tags
+vendor.tags
+tmtagsHistory
+*.sublime-project
+*.sublime-workspace
+.bundle
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
