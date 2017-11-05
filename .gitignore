@@ -17,6 +17,9 @@ Session.vim
 .netrwhist
 *~
 
+### IDE
+.idea/
+
 ### Python
 
 # Byte-compiled / optimized / DLL files
