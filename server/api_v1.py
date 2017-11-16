@@ -2,7 +2,7 @@
 
 import linkero.core.linkero as linkero
 
-#api_base_path = "/motion/api/v1"
+api_base_path = "/motion/api/v1"
 
 
 class CmdList(linkero.Resource):
@@ -111,5 +111,5 @@ class CmdV1(linkero.Resource):
 ## Actually setup the Api resource routing here
 ##
 def loadAPIv1():
-    linkero.api.add_resource(CmdList, '/help')  # Call CmdList resource if HTTP request to help
-    linkero.api.add_resource(CmdV1, '/v1/<cmd>')
+    linkero.api.add_resource(CmdList, api_base_path + '/help')  # Call CmdList resource if HTTP request to help
+    linkero.api.add_resource(CmdV1, api_base_path + '/<cmd>')
