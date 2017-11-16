@@ -19,7 +19,7 @@ class CmdList(linkero.Resource):
         return self.versions_list
 
 
-class CmdV1(linkero.Resource):
+class Cmd(linkero.Resource):
     """
     V1 with commands available and behavior for requests.
 
@@ -110,6 +110,6 @@ class CmdV1(linkero.Resource):
 ##
 ## Actually setup the Api resource routing here
 ##
-def loadAPIv1():
+def loadAPI():
     linkero.api.add_resource(CmdList, api_base_path + '/help')  # Call CmdList resource if HTTP request to help
-    linkero.api.add_resource(CmdV1, api_base_path + '/<cmd>')
+    linkero.api.add_resource(Cmd, api_base_path + '/<cmd>')
