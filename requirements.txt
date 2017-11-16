@@ -1,5 +1,5 @@
 # Motion api bot requirements
-linkero>=0.9.4
+linkero>=0.9.5
 requests
 python-telegram-bot
 pytz
