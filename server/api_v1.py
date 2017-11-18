@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import linkero.core.linkero as linkero
+from common import CoreConfigurator
 
-#api_base_path = "/motion/api/v1"
+api_base_path = "/motion/api/v1"
+core_configurator = CoreConfigurator()
 
 
 class CmdList(linkero.Resource):
@@ -19,7 +21,7 @@ class CmdList(linkero.Resource):
         return self.versions_list
 
 
-class CmdV1(linkero.Resource):
+class Cmd(linkero.Resource):
     """
     V1 with commands available and behavior for requests.
 
@@ -39,14 +41,14 @@ class CmdV1(linkero.Resource):
 
     def get(self, cmd):
         value = ''
-        if self.is_cmd_in_list(self.v1_cmd_list, cmd):
-            value = list(self.v1_cmd_list[cmd].keys())[0](self)         # Invoke callback for each command
+        if self.is_cmd_in_list(self.cmd_list, cmd):
+            value = list(self.cmd_list[cmd].keys())[0](self)         # Invoke callback for each command
         else:
             value = 'No valid command for v1. Use help command to check valid cmds'
         return value, 201
 
     def delete(self, cmd):
-        #is_cmd_in_list(v1_cmd_list, cmd)
+        #is_cmd_in_list(cmd_list, cmd)
         #del versions_list[cmd]
         return '', 204
 
@@ -71,22 +73,22 @@ class CmdV1(linkero.Resource):
             return True
 
     ###############################################################
-    # Internal <function_call> from v1_cmd_list, modify to add behavior.
+    # Internal <function_call> from cmd_list, modify to add behavior.
     ###############################################################
     def f_help(self):
         message = ''
-        for value in self.v1_cmd_list:
-            message = message + 'Command: <' + str(value) + '>: ' + self.v1_cmd_list[value].values()[0] + '. \n'
+        for value in self.cmd_list:
+            message = message + 'Command: <' + str(value) + '>: ' + self.cmd_list[value].values()[0] + '. \n'
         return message
 
     def f_info(self):
         return self.info
 
     def f_start(self):
-        return core.start()
+        return core_configurator.core.start()
 
     def f_stop(self):
-        return core.stop()
+        return core_configurator.core.stop()
 
     def f_version(self):
         return self.version
@@ -98,7 +100,7 @@ class CmdV1(linkero.Resource):
     ###############################################################
     # Array with <cmd>:<function_call> modify to add cmds.
     ###############################################################
-    v1_cmd_list = {
+    cmd_list = {
         'help': {f_help: 'Show all commands available'},
         'start': {f_start: 'Start motion binary to detect events. If is already active do nothing.'},
         'stop': {f_stop: 'Stop motion binary detecting events. If no active do nothing.'},
@@ -110,6 +112,6 @@ class CmdV1(linkero.Resource):
 ##
 ## Actually setup the Api resource routing here
 ##
-def loadAPIv1():
-    linkero.api.add_resource(CmdList, '/help')  # Call CmdList resource if HTTP request to help
-    linkero.api.add_resource(CmdV1, '/v1/<cmd>')
+def loadAPI():
+    linkero.api.add_resource(CmdList, api_base_path + '/help')  # Call CmdList resource if HTTP request to help
+    linkero.api.add_resource(Cmd, api_base_path + '/cmd/<cmd>')

@@ -9,9 +9,11 @@ import linkero.core.gateway.waitress_service as waitress
 import api_v1
 
 # 3) Load desired APIs
-api_v1.loadAPIv1()
+api_v1.loadAPI()
 
 # 4) Run Linkero
-linkero.run()              # Run with Werkzeug (not recommended for production environments)
-#gevent.run(linkero.app)    # Run with Gevent
-#waitress.run(linkero.app)   # Run with Waitress
+if __name__ == '__main__':
+    # Entry point
+    linkero.run()              # Run with Werkzeug (not recommended for production environments)
+    #gevent.run(linkero.app)    # Run with Gevent
+    #waitress.run(linkero.app)   # Run with Waitress

@@ -1,3 +1,6 @@
-# Motion api bot requirements TODO
-linkero
+# Motion api bot requirements
+linkero>=0.9.5
 requests
+python-telegram-bot
+pytz
+aniso8601
