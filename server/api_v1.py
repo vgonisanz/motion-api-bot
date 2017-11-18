@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import linkero.core.linkero as linkero
+from common import CoreConfigurator
 
 api_base_path = "/motion/api/v1"
+core_configurator = CoreConfigurator()
 
 
 class CmdList(linkero.Resource):
@@ -83,10 +85,10 @@ class Cmd(linkero.Resource):
         return self.info
 
     def f_start(self):
-        return core.start()
+        return core_configurator.core.start()
 
     def f_stop(self):
-        return core.stop()
+        return core_configurator.core.stop()
 
     def f_version(self):
         return self.version
