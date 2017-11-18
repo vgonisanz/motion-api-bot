@@ -12,6 +12,8 @@ import api_v1
 api_v1.loadAPI()
 
 # 4) Run Linkero
-linkero.run()              # Run with Werkzeug (not recommended for production environments)
-#gevent.run(linkero.app)    # Run with Gevent
-#waitress.run(linkero.app)   # Run with Waitress
+if __name__ == '__main__':
+    # Entry point
+    linkero.run()              # Run with Werkzeug (not recommended for production environments)
+    #gevent.run(linkero.app)    # Run with Gevent
+    #waitress.run(linkero.app)   # Run with Waitress
